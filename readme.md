@@ -88,9 +88,9 @@ recent ones).
 |-------------|------------|--------------|
 | Min Version | Win 7 x64  | Ubuntu 16.04 |
 
-Note: only the Windows 10 version has been extensively tested.
+**Note:** only the Windows 10 version has been extensively tested.
 
-Note: distributions that are binary compatible with Ubuntu 16.04 should work as well.
+**Note:** distributions that are binary compatible with Ubuntu 16.04 should work as well.
 
 ### Software
 
@@ -110,8 +110,15 @@ Note: distributions that are binary compatible with Ubuntu 16.04 should work as 
 * [stb](https://github.com/nothings/stb)
 * [tinyobjloader-c](https://github.com/syoyo/tinyobjloader-c)
 * [Vulkan-Headers](https://github.com/KhronosGroup/Vulkan-Headers)
-* [glslang](https://github.com/KhronosGroup/glslang) (optional, see the `CONFIG_BUILD_GLSLANG` CMake option)
+* [glslang](https://github.com/KhronosGroup/glslang)
 * [openal-soft](https://github.com/kcat/openal-soft)
+
+**Note:** Building with glslang is now required
+
+## Quick Command Instructions for Building glslang via PowerShell:
+```
+$installDir = "C:\tools\glslang"; $sourceDir = "$installDir\src"; $buildDir = "$installDir\build"; if (-Not (Test-Path -Path $installDir)) { New-Item -ItemType Directory -Path $installDir | Out-Null }; git clone https://github.com/KhronosGroup/glslang.git $sourceDir; Set-Location -Path $sourceDir; python .\update_glslang_sources.py; cmake -B $buildDir -DCMAKE_INSTALL_PREFIX="$installDir\install"; cmake --build $buildDir --config Release --target install; $env:GLSLANG_COMPILER = "$installDir\install\bin\glslangValidator.exe"; Write-Output "glslang installed successfully at $installDir"
+```
 
 ## Build Instructions
 
@@ -123,7 +130,7 @@ Note: distributions that are binary compatible with Ubuntu 16.04 should work as 
 
      Note: this is required by the shader build rules.
 
-  3. Copy (or create a symbolic link) to the game assets folder (`Q2RTX/baseq2`) 
+  3. Copy the files from the Steam `Q2RTX/baseq2` into the `Q2RTX/baseq2` folder from this repository you cloned (or create a symbolic link to the Steam `Q2RTX/baseq2` folder).
 
      Note: the asset packages are required for the engine to run.
      Specifically, the `blue_noise.pkz` and `q2rtx_media.pkz` files or their extracted contents.
@@ -135,14 +142,21 @@ Note: distributions that are binary compatible with Ubuntu 16.04 should work as 
      `cd build`  
      `cmake ..`
 
-     **Note**: only 64-bit builds are supported, so make sure to select a 64-bit generator during the initial configuration of CMake.
+     **Note:** only 64-bit builds are supported, so make sure to select a 64-bit generator during the initial configuration of CMake.
      
-     Note 2: when CMake is configuring `curl`, it will print warnings like `Found no *nroff program`. These can be ignored.
+     **Note 2:** when CMake is configuring `curl`, it will print warnings like `Found no *nroff program`. These can be ignored.
 
-  5. Build with Visual Studio on Windows, make on Linux, or the CMake command
+     **Note 3:** Build with Visual Studio on Windows, make on Linux, or the CMake command
      line:
 
      `cmake --build . `
+
+  5. Quick command instructions For building QuakeRTX with cmake and glslang via PowerShell:
+```     
+$installDir = "C:\tools\glslang"; $sourceDir = "$installDir\src"; $buildDir = "$installDir\build"; if (-Not (Test-Path -Path $installDir)) { New-Item -ItemType Directory -Path $installDir | Out-Null }; git clone https://github.com/KhronosGroup/glslang.git $sourceDir; Set-Location -Path $sourceDir; python .\update_glslang_sources.py; cmake -B $buildDir -DCMAKE_INSTALL_PREFIX="$installDir\install"; cmake --build $buildDir --config Release --target install; $env:GLSLANG_COMPILER = "$installDir\install\bin\glslangValidator.exe"; Write-Output "glslang installed successfully at $installDir"; Set-Location -Path "C:\!!!!!REPLACEME!!!!\build"; cmake -DGLSLANG_COMPILER="$installDir\install\bin\glslangValidator.exe" ..; cmake --build . --config Release
+```
+
+**Note:** replace !!!!!REPLACEME!!!! with your build folder IE: `d:\temp\quakertx\build\`
 
 ## Music Playback Support
 
@@ -233,9 +247,9 @@ console variables _before_ starting the game, i.e. in the config file or through
  backdoor "1"
 ```
 
-Note: the password set here should match the password specified in the korgi configuration file.
+**Note:** the password set here should match the password specified in the korgi configuration file.
 
-Note 2: enabling the rcon backdoor allows other people to issue console commands to your game from 
+**Note 2:** enabling the rcon backdoor allows other people to issue console commands to your game from 
 other computers, so choose a good password.
 
 ## Test Model
